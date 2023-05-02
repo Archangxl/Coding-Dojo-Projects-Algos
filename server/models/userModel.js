@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userRecipeSchema = new mongoose.Schema({
+const RecipeSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Please provide a recipe name'],
@@ -40,7 +40,7 @@ const UserSchema = new mongoose.Schema({
         required: [true, "Password is required"],
         minlength: [8, "Password must be 8 characters or longer"]
     }, 
-    cookbook: [userRecipeSchema]
+    cookbook: [RecipeSchema]
     }, {timestamps: true}
 );
 

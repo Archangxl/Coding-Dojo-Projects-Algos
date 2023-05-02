@@ -15,7 +15,17 @@ module.exports = {
     registerUser: (req, res) => {
         User.create(req.body)
             .then(user => {
-                res.status(200).json( {msg: "success!", user: user});
+                res.status(200).json( {user: user});
+            })
+            .catch(err => {
+                res.status(400).json(err);
+            })
+    },
+    addToCookbook: (req,res) => {
+        User.findByIdAndUpdate({_id: req.params.id}, req.body, {new: true, runValidators: true})
+            .then(user => {
+                user.cookbook.push(req.body);
+                res.status(200).json({ user: user });
             })
             .catch(err => {
                 res.status(400).json(err);
