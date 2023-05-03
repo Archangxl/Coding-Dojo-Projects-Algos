@@ -11,10 +11,8 @@ app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 
 const UserRoutes = require('./routes/userRoutes');
 const RecipeRoutes = require('./routes/recipeRoutes');
-const CookbookRoutes = require('./routes/cookbookRoutes');
 
 UserRoutes(app);
 RecipeRoutes(app);
-CookbookRoutes(app);
 
 app.listen(8000, () => console.log('The server is all fired up on port 8000!'));

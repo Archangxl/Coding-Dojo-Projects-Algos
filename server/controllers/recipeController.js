@@ -1,4 +1,5 @@
 const Recipe = require('../models/recipeModel');
+const User = require('../models/userModel');
 
 module.exports = {
     findAllRecipes: (req,res) => {
@@ -11,14 +12,20 @@ module.exports = {
             })
     },
 
-    createRecipe: (req, res) => {
-        Recipe.create(req.body)
-            .then(recipe => {
-                res.status(200).json( {recipe: recipe});
-            })
-            .catch(err => {
-                res.status(400).json(err);
-            })
+    createRecipeThenaddRecipeToCookbook: (req, res) => {
+        User.findByIdAndUpdate({_id: req.params.userId}, {new:true, runValidators: true})
+            .then(user => {
+                Recipe.create(req.body)
+                    .then(recipe => {
+                        user.cookbook.push(recipe);
+                        user.save({validateBeforeSave: false});
+                        res.status(200).json(user);
+                    })
+                    .catch(err => {
+                        res.status(400).json(err);
+                    })
+                })
+            .catch( err => res.status(400).json(err));
     },
 
     findOneRecipe: (req, res) => {
