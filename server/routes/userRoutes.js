@@ -5,6 +5,5 @@ module.exports = app => {
     app.post('/api/registerUser', UserController.registerUser);
     app.get('/api/grabUser/:id', UserController.findOneUser);
     app.put('/api/updateUser/:id', UserController.updateUser);
-    app.put('/api/addRecipeToCookbook/:id', UserController.addToCookbook);
     app.delete('/api/deleteUser/:id', UserController.deleteUser);
 }

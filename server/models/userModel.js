@@ -1,22 +1,5 @@
 const mongoose = require('mongoose');
-
-const RecipeSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: [true, 'Please provide a recipe name'],
-        minLength: [3, 'Please make your Recipe name at least 3 characters']
-    }, 
-    ingredients: {
-            type: String, 
-            required: [true, 'Please provide ingredients'],
-            minLength: [3, 'Please make Ingredient at least 3 characters long']
-    },
-    instructions: {
-            type: String,
-            required: [true, 'Please provide instructions'],
-            minLength: [3, 'Please ']
-    }
-}, {timestamps: true});
+const Recipe = require('../models/recipeModel').schema;
 
 const UserSchema = new mongoose.Schema({
     firstName: {
@@ -40,7 +23,7 @@ const UserSchema = new mongoose.Schema({
         required: [true, "Password is required"],
         minlength: [8, "Password must be 8 characters or longer"]
     }, 
-    cookbook: [RecipeSchema]
+    cookbook: [Recipe],
     }, {timestamps: true}
 );
 
@@ -66,4 +49,5 @@ UserSchema.pre('save', function(next) {
 });
 
 const User = mongoose.model('User', UserSchema);
+
 module.exports = User;

@@ -1,9 +1,10 @@
 const User = require('../models/userModel');
+const RecipeController = require('../controllers/recipeController');
 
 module.exports = {
 
     findAllUsers: (req,res) => {
-        User.find().sort({"name": 'asc'})
+        User.find().sort({"firstName": 'asc'})
             .then(allUsers => {
                 res.status(200).json(allUsers);;
             })
@@ -21,25 +22,15 @@ module.exports = {
                 res.status(400).json(err);
             })
     },
-    addToCookbook: (req,res) => {
-        User.findByIdAndUpdate({_id: req.params.id}, req.body, {new: true, runValidators: true})
+
+    findOneUser: (req, res) => {
+        User.findOne({_id: req.params.id})
             .then(user => {
-                user.cookbook.push(req.body);
-                res.status(200).json({ user: user });
+                res.status(200).json(user);
             })
             .catch(err => {
                 res.status(400).json(err);
             })
-    },
-
-    findOneUser: (req, res) => {
-        User.findOne({_id: req.params.id})
-        .then(user => {
-            res.status(200).json(user);
-        })
-        .catch(err => {
-            res.status(400).json(err);
-        })
     },
 
     updateUser: (req, res) => {
