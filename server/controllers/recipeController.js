@@ -2,15 +2,6 @@ const Recipe = require('../models/recipeModel');
 const User = require('../models/userModel');
 
 module.exports = {
-    findAllRecipes: (req,res) => {
-        Recipe.find()
-            .then(allRecipes => {
-                res.status(200).json(allRecipes);;
-            })
-            .catch(err => {
-                res.status(400).json(err);
-            })
-    },
 
     createRecipeThenaddRecipeToCookbook: (req, res) => {
         User.findByIdAndUpdate({_id: req.params.userId}, {new:true, runValidators: true})
@@ -28,24 +19,29 @@ module.exports = {
             .catch( err => res.status(400).json(err));
     },
 
-    findOneRecipe: (req, res) => {
-        Recipe.findOne({_id: req.params.id})
-            .then(recipe => {
-                res.status(200).json(recipe);
-            })
-            .catch(err => {
-                res.status(400).json(err);
-            })
+    findUserByIdThenfindRecipeById: (req, res) => {
+        User.findById({_id: req.params.userId})
+            Recipe.findByIdAndUpdate({_id: req.params.id}, req.body, {})
+                .then(recipe => {
+                    res.status(200).json(recipe);
+                })
+                .catch(err => res.status(400).json(err));
     },
 
-    updateRecipe: (req, res) => {
-        Recipe.findOneAndUpdate({_id: req.params.id}, req.body, {new:true, runValidators:true})
-            .then(updateRecipe => {
-                res.status(200).json(updateRecipe);
+    findUserByIdThenFindRecipeByIdThenUpdateRecipe: (req, res) => {
+        User.findById({_id: req.params.userId})
+            .then(user => {
+                let recipeId = req.params.id;
+                let i = 0;
+                while (i < user.cookbook.length()) {
+                    if (user.cookbook[i]._id.string() === recipeId.toString()) {
+                        
+                    }
+                    i++;
+                }
             })
-            .catch(err => {
-                res.status(400).json(err);
-            })
+            .catch(err => res.status(400).json(err));
+            
     }, 
 
     deleteRecipe: (req, res) => {
