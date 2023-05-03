@@ -9,8 +9,7 @@ module.exports = {
                 Recipe.create(req.body)
                     .then(recipe => {
                         user.cookbook.push(recipe);
-                        user.confirmPassword = user.password;
-                        user.save();
+                        user.save({validateBeforeSave: false});
                         res.status(200).json(user);
                     })
                     .catch(err => {
