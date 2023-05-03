@@ -1,0 +1,23 @@
+Repository link: https://github.com/Archangxl/My-Cookbook
+
+Project Pitch: 
+description: 
+An application that allows someone to have a virtual private cookbook, with the option to share recipes with others. 
+
+-Stack: Mern
+-MVP Feature list: 
+*login and registration
+*One-to-many | (user to recipes)
+*One-to-one | (landing page recipes)
+*CRUD
+*AWS deployed
+*Will have some Bootstrap and some normal CSS
+*Responsive so it can be viewed on mobile devices
+*Protected Routes
+
+Product back log
+*Protected Routes
+*Socket IO: for chat between users and liking shared recipes
+*Third party API
+*User edit page
+
