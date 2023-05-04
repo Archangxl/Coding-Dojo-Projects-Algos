@@ -12,9 +12,7 @@ module.exports = {
                         user.save({validateBeforeSave: false});
                         res.status(200).json(user);
                     })
-                    .catch(err => {
-                        res.status(400).json(err);
-                    })
+                    .catch(err => res.status(400).json(err));
                 })
             .catch( err => res.status(400).json(err));
     },
@@ -22,11 +20,7 @@ module.exports = {
     findUserByIdThenfindRecipeById: (req, res) => {
         User.findById({_id: req.params.userId})
             .then(user => {
-                Recipe.findByIdAndUpdate({_id: req.params.id}, req.body, {})
-                    .then(recipe => {
-                        res.status(200).json(recipe);
-                    })
-                    .catch(err => res.status(400).json({err: err, message: "Couldn't find Recipe please try again"}));
+                res.status(400).json(user.cookbook.id(req.params.id));
             })
             .catch(err => res.status(400).json(err));
     },
@@ -34,36 +28,22 @@ module.exports = {
     findUserByIdThenFindRecipeByIdThenUpdateRecipe: (req, res) => {
         User.findById({_id: req.params.userId})
             .then(user => {
-                    Recipe.findById({_id: req.params.id})
-                        .then(foundRecipe => {
-                            Recipe.findByIdAndUpdate({_id: req.params.id}, req.body, {new: true, runValidators:true})
-                                .then(updatedRecipe => {
-                                    user.cookbook.pop(foundRecipe);
-                                    user.cookbook.push(updatedRecipe);
-                                    user.save({validateBeforeSave: false})
-                                    res.status(200).json(user);
-                                })
-                                .catch(err => res.status(400).json(err));
-                        })
-                        .catch(err => res.status(400).json({err: err, message: "Couldn't find Recipe please try again"}));                
+                user.cookbook.id(req.params.id).name = req.body.name;
+                user.cookbook.id(req.params.id).ingredients = req.body.ingredients;
+                user.cookbook.id(req.params.id).instructions = req.body.instructions;
+                user.save({validateBeforeSave: false});
+                res.status(200).json(user.cookbook.id(req.params.id));
             })
-            .catch(err => res.status(400).json(err));
-            
+            .catch(err => res.status(408).json("Couldn't find Recipe please try again!"));
     }, 
 
     findUserByIdThenDeleteRecipeByPoppingItFromCookbookArray: (req, res) => {
         User.findById({_id: req.params.userId})
             .then(user => {
-                Recipe.findById({_id: req.params.id})
-                    .then(res => {
-                        user.cookbook.pop(Recipe.findByIdAndDelete({_id: req.params.id}))
-                        user.save({validateBeforeSave: false})
-                        res.status(200).json(res);
-                    })
-                    .catch(err => res.status(400).json({err: err, message: "Couldn't find Recipe please try again"}));
+                user.cookbook.id(req.params.id).deleteOne();
+                user.save({validateBeforeSave: false});
+                res.status(200).json(user);
             })
-            .catch(err => {
-                res.status(400).json(err);
-            });
+            .catch(err => res.status(408).json("Couldn't find Recipe please try again!"));
     }
 }
