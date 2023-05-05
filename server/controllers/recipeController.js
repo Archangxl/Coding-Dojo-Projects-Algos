@@ -1,20 +1,34 @@
 const Recipe = require('../models/recipeModel');
 const User = require('../models/userModel');
+const Ingredient = require('../models/ingredientModel');
 
 module.exports = {
 
     createRecipeThenaddRecipeToCookbook: (req, res) => {
-        User.findByIdAndUpdate({_id: req.params.userId}, {new:true, runValidators: true})
+        User.findByIdAndUpdate({_id: req.params.userId}, {new: true, runValidators: true})
             .then(user => {
-                Recipe.create(req.body)
+                Recipe.create({name: req.body.name, instructions: req.body.instructions}) 
                     .then(recipe => {
-                        user.cookbook.push(recipe);
-                        user.save({validateBeforeSave: false});
-                        res.status(200).json(user);
+                        let i = 1;
+                        let array = [];
+                        while (req.body["ingredient" + i.toString()] !== undefined) {
+                            array.push({item: req.body["ingredient" + i.toString()]});
+                            i++;
+                        }
+                        Ingredient.insertMany(array)
+                            .then(ingredients => {
+                                for (let i = 0; i < ingredients.length ; i++) {
+                                    recipe.ingredients.push(ingredients[1]);
+                                }
+                                recipe.save();
+                                user.cookbook.push(recipe);
+                                user.save({validateBeforeSave: false});
+                                res.status(200).json(user);
+                            }) 
+                            .catch(err => res.status(400).json({err: err, message: "Ing Error"}));
                     })
-                    .catch(err => res.status(400).json(err));
-                })
-            .catch( err => res.status(400).json(err));
+            })
+            .catch(err => res.status(400).json({err: err, message: "User Error"}));
     },
 
     findUserByIdThenfindRecipeById: (req, res) => {
