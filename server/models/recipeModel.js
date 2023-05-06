@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Ingredient = require('../models/ingredientModel').schema;
+const Instruction = require('../models/instructionsModel').schema;
 
 const RecipeSchema = new mongoose.Schema({
     name: {
@@ -8,11 +9,7 @@ const RecipeSchema = new mongoose.Schema({
         minLength: [3, 'Please make your Recipe name at least 3 characters']
     }, 
     ingredients: [Ingredient],
-    instructions: {
-            type: String,
-            required: [true, 'Please provide instructions'],
-            minLength: [3, 'Please ']
-    }
+    instructions: [Instruction],
 }, {timestamps: true});
 
 const Recipe = mongoose.model('Recipe', RecipeSchema);

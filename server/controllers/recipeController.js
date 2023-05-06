@@ -1,29 +1,51 @@
 const Recipe = require('../models/recipeModel');
 const User = require('../models/userModel');
 const Ingredient = require('../models/ingredientModel');
+const Instruction = require('../models/instructionsModel');
 
 module.exports = {
 
     createRecipeThenaddRecipeToCookbook: (req, res) => {
         User.findByIdAndUpdate({_id: req.params.userId}, {new: true, runValidators: true})
             .then(user => {
-                Recipe.create({name: req.body.name, instructions: req.body.instructions}) 
+                Recipe.create({name: req.body.name}) 
                     .then(recipe => {
-                        let i = 1;
-                        let array = [];
-                        while (req.body["ingredient" + i.toString()] !== undefined) {
-                            array.push({item: req.body["ingredient" + i.toString()]});
-                            i++;
+                        //ingredients first
+                        let ingredientFormIndex = 0;
+                        let ingredientArray = [];
+                        while (req.body["ingredient" + ingredientFormIndex.toString()] !== undefined) {
+                            ingredientArray.push({item: req.body["ingredient" + ingredientFormIndex.toString()]});
+                            ingredientFormIndex++;
                         }
-                        Ingredient.insertMany(array)
+                        Ingredient.insertMany(ingredientArray)
                             .then(ingredients => {
-                                for (let i = 0; i < ingredients.length ; i++) {
-                                    recipe.ingredients.push(ingredients[1]);
+                                for (let ingredientIndex = 0; ingredientIndex < ingredients.length ; ingredientIndex++) {
+                                    recipe.ingredients.push(ingredients[ingredientIndex]);
                                 }
-                                recipe.save();
-                                user.cookbook.push(recipe);
-                                user.save({validateBeforeSave: false});
-                                res.status(200).json(user);
+                                
+                                //instructions second
+
+                                let instructionFormIndex = 0;
+                                let instructionArray = [];
+                                while (req.body["instruction" + instructionFormIndex.toString()] !== undefined) {
+                                    instructionArray.push({step: req.body["instruction" + instructionFormIndex.toString()]});
+                                    instructionFormIndex++;
+                                }
+                                
+                                Instruction.insertMany(instructionArray)
+                                    .then(instructions => {
+                                        
+                                        for (let instructionIndex = 0; instructionIndex < instructions.length; instructionIndex++) {
+                                            recipe.instructions.push(instructions[instructionIndex]);
+                                        }
+                                        
+                                        recipe.save();
+                                        user.cookbook.push(recipe);
+                                        user.save({validateBeforeSave: false});
+                                        
+                                        res.status(200).json(user);
+                                    })
+                                    .catch(err => res.status(400).json({err: err, message: "Instruction Error"}));
                             }) 
                             .catch(err => res.status(400).json({err: err, message: "Ing Error"}));
                     })
@@ -43,12 +65,49 @@ module.exports = {
         User.findById({_id: req.params.userId})
             .then(user => {
                 user.cookbook.id(req.params.id).name = req.body.name;
-                user.cookbook.id(req.params.id).ingredients = req.body.ingredients;
-                user.cookbook.id(req.params.id).instructions = req.body.instructions;
-                user.save({validateBeforeSave: false});
-                res.status(200).json(user.cookbook.id(req.params.id));
+                const recipe = user.cookbook.id(req.params.id);
+                recipe.ingredients = [];
+                recipe.instructions = [];
+                //ingredients first
+
+                let ingredientFormIndex = 0;
+                let ingredientArray = [];
+                while (req.body["ingredient" + ingredientFormIndex.toString()] !== undefined) {
+                    ingredientArray.push({item: req.body["ingredient" + ingredientFormIndex.toString()]});
+                    ingredientFormIndex++;
+                }
+                
+                Ingredient.insertMany(ingredientArray)
+                    .then(ingredients => {
+                        for (let i = 0; i < ingredients.length ; i++) {
+                            recipe.ingredients.push(ingredients[i]);
+                        }
+                         //instructions second
+
+                        let instructionFormIndex = 0;
+                        let instructionArray = [];
+                        while (req.body["instruction" + instructionFormIndex.toString()] !== undefined) {
+                            instructionArray.push({step: req.body["instruction" + instructionFormIndex.toString()]});
+                            instructionFormIndex++;
+                        }
+                        Instruction.insertMany(instructionArray)
+                            .then(instructions => {
+                                
+                                for (let instructionIndex = 0; instructionIndex < instructions.length; instructionIndex++) {
+                                    recipe.instructions.push(instructions[instructionIndex]);
+                                }
+                                recipe.save();
+                                user.save({validateBeforeSave: false});
+                                res.status(200).json(user);
+                            })
+                            .catch(err => res.status(400).json({err: err, message: "Instruction Error"}));
+                            
+                    }) 
+                    
+                    .catch(err => res.status(400).json({err: err, message: "Ing Error"}));
+                    
             })
-            .catch(err => res.status(408).json("Couldn't find Recipe please try again!"));
+            .catch(err => res.status(400).json({err: err, message: "Couldn't find User please try again!"}));
     }, 
 
     findUserByIdThenDeleteRecipeByPoppingItFromCookbookArray: (req, res) => {
@@ -58,6 +117,6 @@ module.exports = {
                 user.save({validateBeforeSave: false});
                 res.status(200).json(user);
             })
-            .catch(err => res.status(408).json("Couldn't find Recipe please try again!"));
+            .catch(err => res.status(408).json({err: err, message: "Couldn't find User please try again!"}));
     }
 }
