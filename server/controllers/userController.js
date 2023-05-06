@@ -16,21 +16,39 @@ module.exports = {
     registerUser: (req, res) => {
         User.create(req.body)
             .then(user => {
-                res.status(200).json( {user: user});
+                const userToken = jwt.sign({
+                    id: user._id
+                }, process.env.Kitchen);
+
+                res.cookie("userToken", userToken, { httpOnly: true }).json({
+                    message: "This response has a cookie", user: user
+                });
             })
             .catch(err => {
                 res.status(400).json(err);
             })
     },
 
-    findOneUser: (req, res) => {
-        User.findOne({_id: req.params.id})
-            .then(user => {
-                res.status(200).json(user);
-            })
-            .catch(err => {
-                res.status(400).json(err);
-            })
+    login: async(req, res) => {
+        const user = await User.findOne({_id: req.body.email});
+        
+        if (user === null) {
+            return res.status(400).json({message: "User doesn't exits!"});
+        }
+
+        const passwordInDB = await bcrypt.compare(req.body.password, user.password);
+
+        if (!passwordInDB) {
+            return res.sendStatus(400).json({message: "Password is incorrect!"});
+        }
+
+        const userTokenForCookies = jwt.sign({
+            id: user._id
+        }, process.env.Kitchen);
+
+        res.cookie("userToken", userTokenForCookies, {
+            httpOnly: true
+        }).json({msg: success})
     },
 
     updateUser: (req, res) => {
@@ -42,6 +60,11 @@ module.exports = {
                 res.status(400).json(err);
             })
     }, 
+
+    logout: (req, res) => {
+        res.clearCookie('userToken');
+        res.status(200).json({message: "logged out!"})
+    },
 
     deleteUser: (req, res) => {
         User.deleteOne({_id: req.params.id})
