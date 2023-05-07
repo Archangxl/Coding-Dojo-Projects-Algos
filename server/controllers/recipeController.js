@@ -5,6 +5,15 @@ const Instruction = require('../models/instructionsModel');
 
 module.exports = {
 
+    findUserThenGrabAllRecipes: async(req,res) => {
+        let findingUser = await User.findById({_id: req.params.userId});
+
+        if (findingUser === null) {
+            res.status(400).json({message: "User invalid"});
+        }
+        return res.status(200).json(findingUser.cookbook);
+    },
+
     createRecipeThenaddRecipeToCookbook: (req, res) => {
         User.findByIdAndUpdate({_id: req.params.userId}, {new: true, runValidators: true})
             .then(user => {

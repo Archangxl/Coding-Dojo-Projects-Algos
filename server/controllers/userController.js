@@ -22,25 +22,23 @@ module.exports = {
 
     login: async(req, res) => {
         const user = await User.findOne({email: req.body.email});
-        
+
         if (user === null) {
-            return res.status(400).json({message: "User doesn't exits!"});
+            return res.status(400).json({message: "Email is incorrect!"})
         }
-        
+
         const passwordInDB = await bcrypt.compare(req.body.password, user.password);
 
         if (passwordInDB === false) {
-            return res.status(400).json({message: "Password is incorrect!"});
+            return res.status(400).json({message: "Password is incorrect!"})
         }
-        
+
         const userTokenForCookies = jwt.sign({
             id: user._id
         }, process.env.FIRST_SECRET_KEY);
-
         res.cookie("userToken", userTokenForCookies, {
             httpOnly: true
-        }).json({msg: "success"})
-        
+        }).json({msg: "success", user: user});
     },
 
     updateUser: (req, res) => {
