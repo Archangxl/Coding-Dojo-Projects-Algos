@@ -2,6 +2,7 @@ const Recipe = require('../models/recipeModel');
 const User = require('../models/userModel');
 const Ingredient = require('../models/ingredientModel');
 const Instruction = require('../models/instructionsModel');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
 

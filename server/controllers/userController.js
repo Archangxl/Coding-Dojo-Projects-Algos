@@ -4,20 +4,25 @@ const jwt = require('jsonwebtoken');
 
 module.exports = {
 
-    registerUser: (req, res) => {
-        User.create(req.body)
-            .then(user => {
-                const userToken = jwt.sign({
-                    id: user._id
-                }, process.env.FIRST_SECRET_KEY);
+    registerUser: async (req, res) => {
+        const userExists = await User.findOne({email: req.body.email});
+        if (userExists) {
+            res.status(400).json({message: "Email already exists"})
+        } else {
+            User.create(req.body)
+                .then(user => {
+                    const userToken = jwt.sign({
+                        id: user._id
+                    }, process.env.FIRST_SECRET_KEY);
 
-                res.cookie("userToken", userToken, { httpOnly: true }).json({
-                    message: "This response has a cookie", user: user
-                });
-            })
-            .catch(err => {
-                res.status(400).json({err: err, message: "Something went wrong!"});
-            })
+                    res.cookie("userToken", userToken, { httpOnly: true }).json({
+                        message: "This response has a cookie", user: user, token: userToken
+                    });
+                })
+                .catch(err => {
+                    res.status(400).json({err: err, message: "Something went wrong!"});
+                })
+        }
     },
 
     login: async(req, res) => {
@@ -36,9 +41,10 @@ module.exports = {
         const userTokenForCookies = jwt.sign({
             id: user._id
         }, process.env.FIRST_SECRET_KEY);
+        const decodedCookieToken = jwt.decode(userTokenForCookies);
         res.cookie("userToken", userTokenForCookies, {
             httpOnly: true
-        }).json({msg: "success", user: user});
+        }).json({msg: "success", user: user, token: decodedCookieToken});
     },
 
     updateUser: (req, res) => {
