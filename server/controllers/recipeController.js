@@ -18,7 +18,7 @@ module.exports = {
     createRecipeThenaddRecipeToCookbook: (req, res) => {
         User.findByIdAndUpdate({_id: req.params.userId}, {new: true, runValidators: true})
             .then(user => {
-                Recipe.create({name: req.body.name}) 
+                Recipe.create(req.body) 
                     .then(recipe => {
                         //ingredients first
                         let ingredientFormIndex = 0;
@@ -56,11 +56,12 @@ module.exports = {
                                         res.status(200).json(user);
                                     })
                                     .catch(err => res.status(400).json({err: err, message: "Instruction Error"}));
-                            }) 
+                            })  
                             .catch(err => res.status(400).json({err: err, message: "Ing Error"}));
-                    })
+                    }) 
+                    .catch(err => res.status(400).json(err));
             })
-            .catch(err => res.status(400).json({err: err, message: "User Error"}));
+            .catch(err => res.status(400).json(err));
     },
 
     findUserByIdThenfindRecipeById: (req, res) => {

@@ -1,26 +1,41 @@
 import axios from "axios";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, Link, useParams } from "react-router-dom";
 
 const Dashboard = () => {
-
-    const [userIdCookies, setUserIdCookies] = useState("");
+    const {userId} = useParams();
+    const [recipes, setRecipes] = useState([]);
     const navigate = useNavigate();
 
     const logout = (e) => {
         axios
-            .get('http://localhost:8000/api/logout')
+            .get('http://localhost:8000/api/logout', {withCredentials: true})
             .then(res => {
                 navigate('/');
             })
             .catch(err => console.log(err));
     }
+
+
+    useEffect(() => {
+        axios
+            .get('http://localhost:8000/api/'+userId+'/grabRecipes', {withCredentials: true})
+            .then(res => {
+                setRecipes(res);
+                console.log(recipes);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }, []);
+
     return (
         <>
-            {console.log(userIdCookies)}
+            {console.log(userId)}
             <nav>
                 <h1>My Cookbook</h1>
                 <button onClick={logout}>Logout</button>
+                <Link to={'/'+userId+'/createRecipe'}>Create a Recipe</Link>
             </nav>
         </>
     );

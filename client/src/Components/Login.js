@@ -2,9 +2,7 @@ import axios from 'axios';
 import React ,{ useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
-
-    const [userIdToken, setUserIdToken] = useState();
+const Login = (props) => {
 
     const [email, setEmail] = useState("");
     const [emailError, setEmailError] = useState();
@@ -21,12 +19,11 @@ const Login = () => {
             .then(res => {
                 setEmail("");
                 setPassword("");
-                setUserIdToken((res.data.token) === undefined ? "work please" : res.data.token.id);
-                console.log(userIdToken);
-                navigate('/dashboard')
+                console.log(res.data.user._id);
+                navigate('/'+ res.data.user._id +'/dashboard')
             })
             .catch(err => {
-                console.log(err)
+                console.log(err);
                 setEmailError((err.response.data.err.errors.email === undefined) ? null : err.response.data.err.errors.email.message);
                 setPasswordError((err.response.data.err.errors.password === undefined) ? null : err.response.data.err.errors.password.message);
             })

@@ -42,9 +42,11 @@ module.exports = {
             id: user._id
         }, process.env.FIRST_SECRET_KEY);
         const decodedCookieToken = jwt.decode(userTokenForCookies);
+        
         res.cookie("userToken", userTokenForCookies, {
             httpOnly: true
         }).json({msg: "success", user: user, token: decodedCookieToken});
+        
     },
 
     updateUser: (req, res) => {
