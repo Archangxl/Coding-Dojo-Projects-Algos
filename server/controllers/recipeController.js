@@ -22,28 +22,34 @@ module.exports = {
     createRecipeThenaddRecipeToCookbook: (req, res) => {
         User.findByIdAndUpdate({_id: req.params.userId}, {new: true, runValidators: true})
             .then(user => {
-                Recipe.create(req.body) 
+                Recipe.create(req.body)
                     .then(recipe => {
                         //ingredients first
-                        let ingredientFormIndex = 0;
                         let ingredientArray = [];
-                        while (req.body["ingredient" + ingredientFormIndex.toString()] !== undefined) {
-                            ingredientArray.push({item: req.body["ingredient" + ingredientFormIndex.toString()]});
-                            ingredientFormIndex++;
+                        const length = req.body.ingredient.length;
+                        for (let ingredientIndex = 0; ingredientIndex < length; ingredientIndex++) {
+                            if (req.body.ingredient[ingredientIndex]['ingredient' + ingredientIndex] === '') {
+                                break;
+                            }
+                            ingredientArray.push(req.body.ingredient[ingredientIndex]['ingredient' + ingredientIndex]);
                         }
+                        
                         Ingredient.insertMany(ingredientArray)
                             .then(ingredients => {
+
                                 for (let ingredientIndex = 0; ingredientIndex < ingredients.length ; ingredientIndex++) {
                                     recipe.ingredients.push(ingredients[ingredientIndex]);
                                 }
                                 
                                 //instructions second
 
-                                let instructionFormIndex = 0;
                                 let instructionArray = [];
-                                while (req.body["instruction" + instructionFormIndex.toString()] !== undefined) {
-                                    instructionArray.push({step: req.body["instruction" + instructionFormIndex.toString()]});
-                                    instructionFormIndex++;
+                                const bodyLength = req.body.Instruction.length;
+                                for (let instructionIndex = 0; instructionIndex < bodyLength; instructionIndex++) {
+                                    if (req.body.instruction[instructionIndex]['instruction' + instructionIndex] === '') {
+                                        break;
+                                    }
+                                    instructionArray.push(req.body.ingredient[instructionIndex]['ingredient' + instructionIndex]);
                                 }
                                 
                                 Instruction.insertMany(instructionArray)
@@ -60,8 +66,10 @@ module.exports = {
                                         res.status(200).json(user);
                                     })
                                     .catch(err => res.status(400).json({err: err, message: "Instruction Error"}));
+                                    
                             })  
                             .catch(err => res.status(400).json({err: err, message: "Ing Error"}));
+                            
                     }) 
                     .catch(err => res.status(400).json(err));
             })

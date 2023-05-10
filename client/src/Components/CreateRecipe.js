@@ -6,9 +6,50 @@ const CreateRecipe = (props) => {
 
     const {userId} = useParams();
     const [name, setName] = useState("");
-    const [ingredient0, setIngredient0] = useState("");
-    const [instruction0, setInstruction0] = useState("");
-    const array = [{ingredient0: 'aa'}];
+    const [ingredient, setIngredient] = useState([
+        {ingredient0: ''},
+        {ingredient1: ''},
+        {ingredient2: ''},
+        {ingredient3: ''},
+        {ingredient4: ''},
+        {ingredient5: ''},
+        {ingredient6: ''},
+        {ingredient7: ''},
+        {ingredient8: ''},
+        {ingredient9: ''},
+        {ingredient10: ''},
+        {ingredient11: ''},
+        {ingredient12: ''},
+        {ingredient13: ''},
+        {ingredient14: ''},
+        {ingredient15: ''},
+        {ingredient16: ''},
+        {ingredient17: ''},
+        {ingredient18: ''},
+        {ingredient19: ''}
+    ]);
+    const [instruction, setInstruction] = useState([
+        {instruction0: ''},
+        {instruction1: ''},
+        {instruction2: ''},
+        {instruction3: ''},
+        {instruction4: ''},
+        {instruction5: ''},
+        {instruction6: ''},
+        {instruction7: ''},
+        {instruction8: ''},
+        {instruction9: ''},
+        {instruction10: ''},
+        {instruction11: ''},
+        {instruction12: ''},
+        {instruction13: ''},
+        {instruction14: ''},
+        {instruction15: ''},
+        {instruction16: ''},
+        {instruction17: ''},
+        {instruction18: ''},
+        {instruction19: ''}
+    ]);
 
     const navigate = useNavigate();
     const logout = (e) => {
@@ -22,28 +63,15 @@ const CreateRecipe = (props) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8000/api/'+userId+'/createRecipe', {name: name, ingredient0, instruction0}
+        axios.post('http://localhost:8000/api/'+userId+'/createRecipe', {name: name, instruction, ingredient}
         , {withCredentials: true})
         .then(res => {
             console.log(res);
+            navigate('/' + userId + '/dashboard');
         })
         .catch(err => console.log(err));
     }
 
-
-
-    const mapIngredients = (e) => {
-        for(let i = 0; i < array.length; i++) {
-            console.log(array);
-        }
-    }
-    
-    const addIngredient = (e) => {
-        let j = array.length;
-        let addition = 'ingredient' + j.toString();
-        array.push({[addition] : ''});
-        
-    }
     return (
         <>
             <nav>
@@ -60,25 +88,29 @@ const CreateRecipe = (props) => {
 
                     <label>Name: </label>
                     <input type="text" onChange={(e) => setName(e.target.value)} value={name}></input>
-
                     {
-                        array.map((ingredient, index) => {
+                        ingredient.map((ingredients, index) => {
                             return (
                                 <div key={index}>
-                                    <label>Instructions: </label>
-                                    <input type="text" onChange={(e) => ingredient = e.target.value} value={ingredient.value}></input>
+                                    <label>Ingredient {index + 1}: </label>
+                                    <input type="text" onChange={(e) => ingredient[index]['ingredient' + index.toString()] = e.target.value} value={ingredient['ingredient' + index.toString()]}></input>
+                                </div>
+                            );
+                        })
+                    }
+                    {
+                        instruction.map((instructions, index) => {
+                            return (
+                                <div key={index}>
+                                    <label>Instruction {index + 1}: </label>
+                                    <input type="text" onChange={(e) => instruction[index]["instruction"+ index.toString()] = e.target.value} value={instruction["instruction"+ index.toString()]}></input>
                                 </div>
                             );
                         })
                     }
 
-                    <label>Instructions: </label>
-                    <input type="text" onChange={(e) => setInstruction0(e.target.value)} value={instruction0}></input>
-
                     <button>Create</button>
                 </form>
-                <button onClick={mapIngredients}>Grab</button>
-                <button onClick={addIngredient}>Add</button>
             </main>
         </>
     );
