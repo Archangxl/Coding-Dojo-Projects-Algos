@@ -7,12 +7,16 @@ const jwt = require('jsonwebtoken');
 module.exports = {
 
     findUserThenGrabAllRecipes: async(req,res) => {
-        let findingUser = await User.findById({_id: req.params.userId});
+        try {
+            let findingUser = await User.findById({_id: req.params.userId});
 
-        if (findingUser === null) {
-            res.status(400).json({message: "User invalid"});
+            if (findingUser === null) {
+                res.status(400).json({message: "User invalid"});
+            }
+            return res.status(200).json(findingUser.cookbook);
+        } catch(err) {
+            res.status(400).json(err);
         }
-        return res.status(200).json(findingUser.cookbook);
     },
 
     createRecipeThenaddRecipeToCookbook: (req, res) => {

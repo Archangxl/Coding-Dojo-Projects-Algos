@@ -24,13 +24,14 @@ const Login = (props) => {
             })
             .catch(err => {
                 console.log(err);
-                setEmailError((err.response.data.err.errors.email === undefined) ? null : err.response.data.err.errors.email.message);
-                setPasswordError((err.response.data.err.errors.password === undefined) ? null : err.response.data.err.errors.password.message);
+                setEmailError((err.response.data.err === undefined) ? null : err.response.data.err.errors.email.message);
+                setPasswordError((err.response.data.message === undefined) ? null : err.response.data.message);
             })
     }
 
     return (
         <>
+
             <nav>
                 <h1>My Cookbook</h1>
             </nav>

@@ -8,6 +8,7 @@ const CreateRecipe = (props) => {
     const [name, setName] = useState("");
     const [ingredient0, setIngredient0] = useState("");
     const [instruction0, setInstruction0] = useState("");
+    const array = [{ingredient0: 'aa'}];
 
     const navigate = useNavigate();
     const logout = (e) => {
@@ -28,8 +29,21 @@ const CreateRecipe = (props) => {
         })
         .catch(err => console.log(err));
     }
-    
 
+
+
+    const mapIngredients = (e) => {
+        for(let i = 0; i < array.length; i++) {
+            console.log(array);
+        }
+    }
+    
+    const addIngredient = (e) => {
+        let j = array.length;
+        let addition = 'ingredient' + j.toString();
+        array.push({[addition] : ''});
+        
+    }
     return (
         <>
             <nav>
@@ -47,15 +61,24 @@ const CreateRecipe = (props) => {
                     <label>Name: </label>
                     <input type="text" onChange={(e) => setName(e.target.value)} value={name}></input>
 
-                    <label>Ingredients: </label>
-                    <input type="text" onChange={(e) => setIngredient0(e.target.value)} value={ingredient0}></input>
+                    {
+                        array.map((ingredient, index) => {
+                            return (
+                                <div key={index}>
+                                    <label>Instructions: </label>
+                                    <input type="text" onChange={(e) => ingredient = e.target.value} value={ingredient.value}></input>
+                                </div>
+                            );
+                        })
+                    }
 
                     <label>Instructions: </label>
                     <input type="text" onChange={(e) => setInstruction0(e.target.value)} value={instruction0}></input>
 
                     <button>Create</button>
                 </form>
-
+                <button onClick={mapIngredients}>Grab</button>
+                <button onClick={addIngredient}>Add</button>
             </main>
         </>
     );

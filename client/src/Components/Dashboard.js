@@ -4,7 +4,7 @@ import { useNavigate, Link, useParams } from "react-router-dom";
 
 const Dashboard = () => {
     const {userId} = useParams();
-    const [recipes, setRecipes] = useState([]);
+    const [recipes, setRecipes] = useState({});
     const navigate = useNavigate();
 
     const logout = (e) => {
@@ -17,12 +17,11 @@ const Dashboard = () => {
     }
 
 
-    useEffect(() => {
+    useEffect(()=> {
         axios
             .get('http://localhost:8000/api/'+userId+'/grabRecipes', {withCredentials: true})
             .then(res => {
-                setRecipes(res);
-                console.log(recipes);
+                setRecipes(res.data);
             })
             .catch(err => {
                 console.log(err);
@@ -31,7 +30,7 @@ const Dashboard = () => {
 
     return (
         <>
-            {console.log(userId)}
+        {console.log(recipes)}
             <nav>
                 <h1>My Cookbook</h1>
                 <button onClick={logout}>Logout</button>

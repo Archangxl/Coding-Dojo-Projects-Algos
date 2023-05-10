@@ -30,8 +30,8 @@ const Registration = () => {
                 setLastName("");
                 setEmail("");
                 setPassword("");
-                setConfirmPassword("");
-                navigate('/dashboard')
+                console.log(res.data.user._id);
+                navigate('/'+ res.data.user._id +'/dashboard')
             })
             .catch(err => {
                 console.log(err);
