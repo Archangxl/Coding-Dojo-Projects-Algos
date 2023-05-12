@@ -4,6 +4,7 @@ import Login from './Components/Login';
 import LandingPage from './Components/LandingPage';
 import Dashboard from './Components/Dashboard';
 import CreateRecipe from './Components/CreateRecipe';
+import UpdateRecipe from './Components/UpdateRecipe';
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                 <Route path='/register' element={<Registration />}/>
                 <Route path='/:userId/dashboard' element={<Dashboard />} />
                 <Route path='/:userId/createRecipe' element={<CreateRecipe />} />
+                <Route path='/:userId/updateRecipe/:id'element={<UpdateRecipe />} />
             </Routes>
         </BrowserRouter>
     </>

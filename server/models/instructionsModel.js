@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const InstructionSchema = new mongoose.Schema({
 
     step: {
-        type: String,
-        required: [true, 'Please fill out Instructions']
+        type: String
     }
 
 }, {timestamps: true});
