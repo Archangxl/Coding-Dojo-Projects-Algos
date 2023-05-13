@@ -31,9 +31,10 @@ module.exports = {
         if (user === null) {
             return res.status(400).json({message: "Email is incorrect!"})
         }
-
+        console.log(user.password);
         const passwordInDB = await bcrypt.compare(req.body.password, user.password);
-
+        
+        console.log(req.body.password);
         if (passwordInDB === false) {
             return res.status(400).json({message: "Password is incorrect!"})
         }

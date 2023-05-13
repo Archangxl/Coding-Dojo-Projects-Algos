@@ -58,7 +58,7 @@ const Dashboard = () => {
                                         }}>Delete</button></td>
                                         <td><button onClick={(e) => {
                                             navigate('/' +userId+ '/updateRecipe/' + recipe._id);
-                                        }}>Updated</button></td>
+                                        }}>Update</button></td>
                                     </tr>
                                 );
                             })

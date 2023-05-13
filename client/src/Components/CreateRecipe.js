@@ -72,6 +72,7 @@ const CreateRecipe = (props) => {
                     <input type="text" onChange={(e) => setName(e.target.value)} value={name}></input>
                     {
                         ingredient.map((ingredients, index) => {
+                            console.log(ingredient)
                             return (
                                 <div key={index}>
                                     <label>Ingredient {index + 1}: </label>
