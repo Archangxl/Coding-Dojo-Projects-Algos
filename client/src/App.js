@@ -5,6 +5,7 @@ import LandingPage from './Components/LandingPage';
 import Dashboard from './Components/Dashboard';
 import CreateRecipe from './Components/CreateRecipe';
 import UpdateRecipe from './Components/UpdateRecipe';
+import './CSS/style.css';
 
 function App() {
     return (

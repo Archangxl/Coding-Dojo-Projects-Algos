@@ -49,34 +49,40 @@ const Registration = () => {
 
     return (
         <>
-            <nav>
+            <nav className="fs-1 my-5 d-flex justify-content-center">
                 <h1>My Cookbook</h1>
             </nav>
-            <main>
+            <main className='mx-5'>
                 <form onSubmit={onRegisterSubmittion}>
                     <h1>Register</h1>
-                    
                     <p>{firstNameError}</p>
-                    <label>First Name: </label>
-                    <input name='firstName' type="text" onChange={(e) => setFirstName(e.target.value)} value={firstName}></input>
-                    
-                    <p>{lastNameError}</p>
-                    <label>Last Name: </label>
-                    <input name='lastName' type="text" onChange={(e) => setLastName(e.target.value)} value={lastName} ></input>
-                    
-                    <p>{emailError}</p>
-                    <label>Email: </label>
-                    <input name='email' type="text" onChange={(e) => setEmail(e.target.value)} value={email}></input>
-                    
-                    <p>{passwordError}</p>
-                    <label>Password: </label>
-                    <input name="password" type='password' onChange={(e) => setPassword(e.target.value)} value={password}></input>
-
-                    <p>{confirmPasswordError}</p>
-                    <label>Confirm Password: </label>
-                    <input name="confirmPassword" type='password' onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword}></input>
-
-                    <button>Submit</button>
+                    <div className='row'>  
+                        <label className='col-3'>First Name: </label>
+                        <input className='col-3' name='firstName' type="text" onChange={(e) => setFirstName(e.target.value)} value={firstName}></input>
+                    </div>
+                    <div className='row'>
+                        <p>{lastNameError}</p>
+                        <label className='col-3'>Last Name: </label>
+                        <input className='col-3' name='lastName' type="text" onChange={(e) => setLastName(e.target.value)} value={lastName} ></input>
+                    </div>
+                    <div className='row'>
+                        <p>{emailError}</p>
+                        <label className='col-3'>Email: </label>
+                        <input className='col-3' name='email' type="text" onChange={(e) => setEmail(e.target.value)} value={email}></input>
+                    </div>
+                    <div className='row'>
+                        <p>{passwordError}</p>
+                        <label className='col-3'>Password: </label>
+                        <input className='col-3' name="password" type='password' onChange={(e) => setPassword(e.target.value)} value={password}></input>
+                    </div>
+                    <div className='row'>
+                        <p>{confirmPasswordError}</p>
+                        <label className='col-3'>Confirm Password: </label>
+                        <input className='col-3' name="confirmPassword" type='password' onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword}></input>
+                    </div>
+                    <div className='mt-4'>
+                        <button className='btn border-dark'>Submit</button>
+                    </div>
                 </form>
             </main>
         </>
