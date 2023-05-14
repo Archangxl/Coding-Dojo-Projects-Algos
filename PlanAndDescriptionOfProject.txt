@@ -15,6 +15,7 @@ An application that allows someone to have a virtual private cookbook, with the 
 *Protected Routes
 
 Product back log
+*images of recipes
 *Protected Routes
 *Socket IO: for chat between users and liking shared recipes
 *Third party API
