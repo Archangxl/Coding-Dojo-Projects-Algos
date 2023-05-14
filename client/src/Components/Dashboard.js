@@ -46,6 +46,7 @@ const Dashboard = () => {
                     <tbody>
                         {
                             recipes.map((recipe, index) => {
+                                
                                 return (
                                     <tr key={index}>
                                         <td>{recipe.name}</td>

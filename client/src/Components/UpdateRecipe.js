@@ -6,7 +6,7 @@ const UpdateRecipe = () => {
 
     const {userId, id} = useParams();
     const [name, setName] = useState("");
-    const [nameError, setNameError] = useState("");
+    const [nameError] = useState("");
     const [ingredient, setIngredient] = useState([]);
     const [instruction, setInstruction] = useState([]);
 
@@ -20,26 +20,30 @@ const UpdateRecipe = () => {
             .catch(err => console.log(err));
     }
 
-    useEffect(()=> {
-        axios
-            .get('http://localhost:8000/api/'+userId+'/grabOneRecipe/'+ id, {withCredentials: true})
-            .then(res => {
-                setName(res.data.name);
-                for (let i = 0; i < res.data.ingredients.length; i++) {
-                    ingredient.push({['ingredient' + i.toString()]:res.data.ingredients[i].item});
-                }
-                for (let j = 0; j < res.data.instructions.length; j++) {
-                    instruction.push({['instruction' + j.toString()]: res.data.instructions[j].step});
-                }
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/' + userId + '/grabOneRecipe/' + id, {withCredentials: true})
+            .then(recipe => {
+                setName(recipe.data.name);
+                let array = [];
+                for(let i = 0; i < recipe.data.ingredients.length; i++) {
+                    array.push({['ingredient' + i.toString()]:recipe.data.ingredients[i].item});
+                } 
+                setIngredient(...ingredient, array);
+                
+                let arrayTwo = [];
+                for(let i = 0; i < recipe.data.instructions.length; i++) {
+                    arrayTwo.push({['instruction' + i.toString()]:recipe.data.instructions[i].step});
+                } 
+                setInstruction(...instruction, arrayTwo);
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }, []);
 
     const onSubmit = (e) => {
         e.preventDefault();
-        axios.put('http://localhost:8000/api/'+userId+'/updateRecipe/' + id, {withCredentials: true})
+        axios.put('http://localhost:8000/api/'+userId+'/updateRecipe/' + id, 
+        {name: name, instruction, ingredient},
+        {withCredentials: true})
             .then(res => {
                 console.log(res);
                 navigate('/' + userId + '/dashboard');
@@ -85,7 +89,6 @@ const UpdateRecipe = () => {
             <main>
 
                 <form onSubmit={onSubmit}>
-                    
                     <p>{nameError}</p>
                     <label>Name: </label>
                     <input type="text" onChange={(e) => setName(e.target.value)} value={name}></input>
@@ -96,8 +99,11 @@ const UpdateRecipe = () => {
                                     <label>Ingredient {index + 1}: </label>
                                     <input 
                                         type="text" 
-                                        placeholder={ingredient[index]['ingredient' + index.toString()]}
-                                        onChange={(e) => ingredient[index]['ingredient' + index.toString()] = e.target.value} 
+                                        value={ingredients[['ingredient' + index]]}
+                                        onChange={(e) => {
+                                            ingredient[index]['ingredient' + index.toString()] = e.target.value;
+                                            navigate('/'+userId+'/updateRecipe/' + id);
+                                        }} 
                                     ></input>
                                 </div>
                             );
@@ -110,15 +116,18 @@ const UpdateRecipe = () => {
                                     <label>Instruction {index + 1}: </label>
                                     <textarea 
                                     type="text"
-                                    onChange={(e) => instruction[index]["instruction"+ index.toString()] = e.target.value} 
-                                    placeholder={instruction[index]["instruction"+ index.toString()]}
+                                    onChange={(e) => {
+                                        instruction[index]["instruction"+ index.toString()] = e.target.value;
+                                        navigate('/'+userId+'/updateRecipe/' + id);
+                                    }} 
+                                    value={instruction[index]["instruction"+ index.toString()]}
                                     ></textarea>
                                 </div>
                             );
                         })
                     }
 
-                    <button>Create</button>
+                    <button>Update</button>
                 </form>
             </main>
         </>

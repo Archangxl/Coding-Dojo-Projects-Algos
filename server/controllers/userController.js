@@ -14,7 +14,7 @@ module.exports = {
                     const userToken = jwt.sign({
                         id: user._id
                     }, process.env.FIRST_SECRET_KEY);
-
+                    console.log(user.password);
                     res.cookie("userToken", userToken, { httpOnly: true }).json({
                         message: "This response has a cookie", user: user, token: userToken
                     });
@@ -31,10 +31,9 @@ module.exports = {
         if (user === null) {
             return res.status(400).json({message: "Email is incorrect!"})
         }
-        console.log(user.password);
+
         const passwordInDB = await bcrypt.compare(req.body.password, user.password);
-        
-        console.log(req.body.password);
+
         if (passwordInDB === false) {
             return res.status(400).json({message: "Password is incorrect!"})
         }

@@ -1,13 +1,13 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React ,{ useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 
 const CreateRecipe = (props) => {
     const {userId} = useParams();
     const [name, setName] = useState("");
     const [nameError, setNameError] = useState("");
-    const [ingredient, setIngredient] = useState([{ingredient0: ''}]);
-    const [instruction, setInstruction] = useState([{instruction0: ''}]);
+    const [ingredient] = useState([{ingredient0: ''}]);
+    const [instruction] = useState([{instruction0: ''}]);
 
     const navigate = useNavigate();
     const logout = (e) => {
@@ -20,8 +20,10 @@ const CreateRecipe = (props) => {
     }
 
     const onSubmit = (e) => {
+        
         e.preventDefault();
-        axios.post('http://localhost:8000/api/'+userId+'/createRecipe', {name: name, instruction, ingredient}
+
+        axios.post('http://localhost:8000/api/'+userId+'/createRecipe', {name: name, instruction: instruction, ingredient: ingredient}
         , {withCredentials: true})
         .then(res => {
             navigate('/' + userId + '/dashboard');
@@ -66,13 +68,12 @@ const CreateRecipe = (props) => {
             <main>
 
                 <form onSubmit={onSubmit}>
-                    
+
                     <p>{nameError}</p>
                     <label>Name: </label>
                     <input type="text" onChange={(e) => setName(e.target.value)} value={name}></input>
                     {
                         ingredient.map((ingredients, index) => {
-                            console.log(ingredient)
                             return (
                                 <div key={index}>
                                     <label>Ingredient {index + 1}: </label>

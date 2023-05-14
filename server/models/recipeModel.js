@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
 const Ingredient = require('../models/ingredientModel').schema;
 const Instruction = require('../models/instructionsModel').schema;
+const Image = require('../models/imageModel').schema;
 
 const RecipeSchema = new mongoose.Schema({
+    image: Image,
     name: {
         type: String,
         required: [true, 'Please provide a recipe name'],

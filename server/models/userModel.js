@@ -41,11 +41,15 @@ UserSchema.pre('validate', function(next) {
 const bcrypt = require('bcrypt');
 
 UserSchema.pre('save', function(next) {
-    bcrypt.hash(this.password, 10)
-        .then(hash => {
-            this.password = hash;
-            next();
-        });
+    if(this.isModified(this.password) || this.isNew) {
+        bcrypt.hash(this.password, 10)
+            .then(hash => {
+                this.password = hash;
+                next();
+            });
+    } else {
+        next();
+    }
 });
 
 const User = mongoose.model('User', UserSchema);

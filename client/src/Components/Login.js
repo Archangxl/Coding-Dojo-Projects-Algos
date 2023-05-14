@@ -19,7 +19,6 @@ const Login = (props) => {
             .then(res => {
                 setEmail("");
                 setPassword("");
-                console.log(res.data.user._id);
                 navigate('/'+ res.data.user._id +'/dashboard')
             })
             .catch(err => {
