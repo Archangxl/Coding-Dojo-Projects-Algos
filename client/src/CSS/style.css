@@ -1,3 +1,38 @@
-main, nav {
+/* 
+ebony clay #363C4C strong
+barley #A57E5F acent 
+mercury #E5E6EA greater acent
+oslo gray #838793 weaker strong
+*/
+* {
+    margin: 0px;
+    background-color: #E5E6EA;
+    color: #363C4C;
+}
+
+main, header, nav {
     min-width: 300px;
+}
+a {
+    color: black !important;
+}
+ul {
+    
+}
+
+
+input {
+    border-radius: 5px;
+}
+input:focus {
+    background-color: #363C4C  !important;
+    color: #E5E6EA !important; 
+}
+
+.login-reg-btn:hover {
+    background-color: #363C4C  !important;
+    color: #E5E6EA !important; 
+}
+.error {
+    color: rgb(226, 9, 9) ;
 }

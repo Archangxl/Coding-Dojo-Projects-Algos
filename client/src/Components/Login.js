@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React ,{ useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login = (props) => {
 
@@ -31,22 +31,27 @@ const Login = (props) => {
     return (
         <>
 
-            <nav>
+            <nav className="fs-1 mt-3 d-flex justify-content-between">
                 <h1>My Cookbook</h1>
+                <Link className="fs-3" to='/'>Back</Link>
             </nav>
-            <main>
+            <main className='mt-5'>
                 <form onSubmit={onRegisterSubmittion}>
                     <h1>Log In</h1>
                     
-                    <p>{emailError}</p>
-                    <label>Email: </label>
-                    <input name='email' type="text" onChange={(e) => setEmail(e.target.value)} value={email}></input>
-                    
-                    <p>{passwordError}</p>
-                    <label>Password: </label>
-                    <input name="password" type='password' onChange={(e) => setPassword(e.target.value)} value={password}></input>
-
-                    <button>Submit</button>
+                    <div className='row'>
+                        <p className='error'>{emailError}</p>
+                        <label className='col-3'>Email: </label>
+                        <input className='col-3' name='email' type="text" onChange={(e) => setEmail(e.target.value)} value={email}></input>
+                    </div>
+                    <div className='row'>
+                        <p className='error'>{passwordError}</p>
+                        <label className='col-3'>Password: </label>
+                        <input className='col-3' name="password" type='password' onChange={(e) => setPassword(e.target.value)} value={password}></input>
+                    </div>
+                    <div className='mt-4'>
+                        <button className='login-reg-btn btn border-dark'>Submit</button>
+                    </div>
                 </form>
             </main>
         </>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React ,{ useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Registration = () => {
 
@@ -49,39 +49,41 @@ const Registration = () => {
 
     return (
         <>
-            <nav className="fs-1 my-5 d-flex justify-content-center">
+            <nav className="fs-1 mt-3 d-flex justify-content-between">
                 <h1>My Cookbook</h1>
+                <Link className="fs-3" to='/'>Back</Link>
             </nav>
-            <main className='mx-5'>
+            <main className='mt-5'>
                 <form onSubmit={onRegisterSubmittion}>
                     <h1>Register</h1>
-                    <p>{firstNameError}</p>
-                    <div className='row'>  
+                    <div className='row'> 
+                        <p className='error'>{firstNameError}</p> 
                         <label className='col-3'>First Name: </label>
                         <input className='col-3' name='firstName' type="text" onChange={(e) => setFirstName(e.target.value)} value={firstName}></input>
                     </div>
                     <div className='row'>
-                        <p>{lastNameError}</p>
+                        <p className='error'>{lastNameError}</p>
                         <label className='col-3'>Last Name: </label>
                         <input className='col-3' name='lastName' type="text" onChange={(e) => setLastName(e.target.value)} value={lastName} ></input>
                     </div>
                     <div className='row'>
-                        <p>{emailError}</p>
+                        <p className='error'>{emailError}</p>
                         <label className='col-3'>Email: </label>
                         <input className='col-3' name='email' type="text" onChange={(e) => setEmail(e.target.value)} value={email}></input>
                     </div>
                     <div className='row'>
-                        <p>{passwordError}</p>
+                        <p className='error'>{passwordError}</p>
                         <label className='col-3'>Password: </label>
                         <input className='col-3' name="password" type='password' onChange={(e) => setPassword(e.target.value)} value={password}></input>
                     </div>
+                    
                     <div className='row'>
-                        <p>{confirmPasswordError}</p>
+                        <p className='error'>{confirmPasswordError}</p>
                         <label className='col-3'>Confirm Password: </label>
                         <input className='col-3' name="confirmPassword" type='password' onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword}></input>
                     </div>
                     <div className='mt-4'>
-                        <button className='btn border-dark'>Submit</button>
+                        <button className='login-reg-btn btn border-dark'>Submit</button>
                     </div>
                 </form>
             </main>
