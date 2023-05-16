@@ -29,18 +29,25 @@ const Dashboard = () => {
 
     return (
         <>
-            <nav>
+        <div className="background-color">
+            <nav className="d-flex justify-content-between align-items-center">
                 <h1>My Cookbook</h1>
-                <button onClick={logout}>Logout</button>
-                <Link to={'/'+userId+'/createRecipe'}>Create a Recipe</Link>
+                <ul className="nav">
+                    <li className="nav-item">
+                        <Link className="nav-link" to={'/'+userId+'/createRecipe'}>Create a Recipe</Link>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link" onClick={logout}>Logout</a>
+                    </li>
+                </ul>
             </nav>
 
             <main>
-                <table>
+                <table className="table">
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Actions</th>
+                            <th colSpan={2}>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -67,6 +74,7 @@ const Dashboard = () => {
                     </tbody>
                 </table>
             </main>
+            </div>
         </>
     );
 }

@@ -56,6 +56,7 @@ const UpdateRecipe = () => {
 
     return (
         <>
+        <div className="background-color">
             <nav>
                 <h1>My Cookbook</h1>
                 <button onClick={logout}>Logout</button>
@@ -130,6 +131,7 @@ const UpdateRecipe = () => {
                     <button>Update</button>
                 </form>
             </main>
+            </div>
         </>
     );
 

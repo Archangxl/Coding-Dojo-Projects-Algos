@@ -49,6 +49,7 @@ const Registration = () => {
 
     return (
         <>
+        <div className="background-color">
             <nav className="fs-1 mt-3 d-flex justify-content-between">
                 <h1>My Cookbook</h1>
                 <Link className="fs-3" to='/'>Back</Link>
@@ -83,10 +84,11 @@ const Registration = () => {
                         <input className='col-3' name="confirmPassword" type='password' onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword}></input>
                     </div>
                     <div className='mt-4'>
-                        <button className='login-reg-btn btn border-dark'>Submit</button>
+                        <button className='login-reg-btn btn'>Submit</button>
                     </div>
                 </form>
             </main>
+            </div>
         </>
     );
 }
