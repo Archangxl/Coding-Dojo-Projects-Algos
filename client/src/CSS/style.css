@@ -15,18 +15,26 @@ body {
 div .background-color {
     background-color: #363C4C;
     padding: 20px;
-    min-width: 300 ;
+    min-width: 300px;
+    border-radius: 5px;
 }
 
 main, header, nav, footer {
     padding: 0px 25px;
     flex: 1;
+    min-width: 300px;
 }
 a {
     color: #E5E6EA !important; 
+    font-size: 20px;
+    min-width: 60px;
 }
-ul {
-    
+a:hover {
+    cursor: pointer !important;
+}
+.image {
+    width: 150px !important;
+    height: -1px;
 }
 
 label {
