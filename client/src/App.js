@@ -6,6 +6,7 @@ import Dashboard from './Components/Dashboard';
 import CreateRecipe from './Components/CreateRecipe';
 import UpdateRecipe from './Components/UpdateRecipe';
 import './CSS/style.css';
+import ViewRecipe from './Components/ViewRecipe';
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                 <Route path='/:userId/dashboard' element={<Dashboard />} />
                 <Route path='/:userId/createRecipe' element={<CreateRecipe />} />
                 <Route path='/:userId/updateRecipe/:id'element={<UpdateRecipe />} />
+                <Route path='/:userId/viewRecipe/:id' element={<ViewRecipe />} />
             </Routes>
         </BrowserRouter>
     </>

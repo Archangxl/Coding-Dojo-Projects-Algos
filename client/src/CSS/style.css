@@ -17,6 +17,7 @@ div .background-color {
     padding: 20px;
     min-width: 300px;
     border-radius: 5px;
+    border: 2px solid #A57E5F; 
 }
 
 main, header, nav, footer {
@@ -40,24 +41,43 @@ a:hover {
 label {
     min-width: 155px;
 }
-input {
+input, textarea {
     border-radius: 5px;
     min-width: 200px;
     color: #363C4C  !important;
 }
-input:focus {
+input:focus, textarea:focus {
     background-color: #363C4C  !important;
     color: #E5E6EA !important; 
 }
-.login-reg-btn {
+.login-reg-btn, .table-btns, .recipe-btn {
+    border-radius: 5px;
+    padding: 2px 10px;
     color: #E5E6EA !important;
     border: 2px solid #E5E6EA !important;
 }
-
-.login-reg-btn:hover {
+.table-btns {
+    background-color: #363C4C !important;
+}
+.login-reg-btn:hover, .table-btns:hover, .recipe-btn:hover {
     background-color: #E5E6EA  !important;
     color: #363C4C !important; 
 }
 .error {
     color: rgb(226, 9, 9) ;
+}
+.log-out-btn {
+    background-color: #363C4C;
+    border: none;
+    margin-left: -6px;
+    text-decoration: underline;
+    font-size: 20px;
+}
+
+.addIngredient, .removeIngredient, .addInstruction, .removeInstruction {
+    background-color: #363C4C;
+    border: none;
+    text-decoration: underline;
+    font-size: 20px;
+    margin-left: -4px;
 }
